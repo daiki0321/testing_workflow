@@ -1,0 +1,31 @@
+name: Push Changes
+
+on:
+  workflow_dispatch:
+
+jobs:
+  push_changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Make changes
+        run: |
+          echo "Some changes" >> file.txt
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "daiki0321"
+          git config --global user.email "daiki@midokura.com"
+          git add .
+          git commit -m "Automated changes"
+      - uses: actions/checkout@v4
+      - name: Push changes
+        run: |
+          git push
+
+  Start_workflow2:
+    name: workflow2
+    needs: push_changes
+    uses: ./.github/workflows/workflow2.yml
